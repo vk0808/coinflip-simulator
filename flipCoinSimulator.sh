@@ -7,7 +7,7 @@ echo "Welcome to Coin Flip Simulator Program"
 headCount=0
 tailCount=0
 
-MAX_PLAY=10
+MAX_PLAY=21
 HEAD=1
 
 
@@ -33,3 +33,12 @@ done
 echo "Head $headCount"
 echo "Tail $tailCount"
 
+
+# Select winner
+if [ $headCount -eq $tailCount ]; then
+	echo "It's a tie"
+elif [ $headCount -gt $tailCount ]; then
+	echo "Winner is Head, won by $((headCount - tailCount)) times"
+else
+	echo "Winner is Tail, won by $((tailCount - headCount)) times"
+fi

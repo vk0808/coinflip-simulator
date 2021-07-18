@@ -1,15 +1,23 @@
+#! /bin/bash -x
+
+echo "Welcome to Coin Flip Simulator Program"
+
+
 # Simulate multiple coin flips
 function coinGame(){
 
         # Variable
         headCount=0
         tailCount=0
+	toss=0
 
-        MAX_PLAY=21
+	local tie=$1
+
+        MAX_PLAY=20
         HEAD=1
 
 
-        while [ $headCount -lt $MAX_PLAY -a $tailCount -lt $MAX_PLAY ]
+        while [ $toss -lt $MAX_PLAY ]
         do
                 # Generate Head/Tail
                 coinFlip=$(( $RANDOM %2 ))
@@ -21,6 +29,8 @@ function coinGame(){
                 else
                         (( tailCount++ ))
                 fi
+
+		((toss++))
         done
 
 
@@ -35,12 +45,13 @@ function coinGame(){
 
         # Select winner
         if [ $headCount -eq $tailCount ]; then
-                echo "It's a tie. Game will restarts"
-                coinGame
+                echo "It's a tie. Game will restart"
+                coinGame 1
 
-        elif [ ${diff#-} -eq 1 ]; then
-                echo "It's a close call. Game restarts"
-                coinGame
+	# If it's a tie then difference in the score has to be more than 1 or else restart
+        elif [ ${diff#-} -eq 1 -a $tie -eq 1 ]; then
+                echo "It's a close call. Game will restart"
+                coinGame 0
 
         elif [ $headCount -gt $tailCount ]; then
                 echo "Winner is Head, won by ${diff#-} times"
@@ -53,5 +64,5 @@ function coinGame(){
 
 
 # Function call
-coinGame
+coinGame 0
 
